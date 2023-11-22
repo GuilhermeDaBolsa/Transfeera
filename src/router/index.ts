@@ -6,9 +6,9 @@ const routes = [
     component: () => import('@/layouts/default/AppScreen.vue'),
     children: [
       {
-        path: 'favorecidos',
+        path: '',
         name: 'favorecidos',
-        component: () => import('@/views/FavoredView.vue'),
+        component: () => import('@/views/ReceiversView.vue'),
       },
     ],
   },

@@ -1,5 +1,5 @@
 <template>
-	<v-app-bar flat>
+	<v-app-bar scroll-behavior="elevate">
 		<AppContentContainerBounds>
 			<v-app-bar-title>
 				<v-img :width="200" cover src="/public/transfeera-logo-verde.svg"></v-img>
