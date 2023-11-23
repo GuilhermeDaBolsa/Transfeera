@@ -7,9 +7,10 @@ import App from './App.vue'
 // Composables
 import { createApp } from 'vue'
 
-/* TODO see axios import and instance creation */
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+
+axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
 
 const app = createApp(App)
 

@@ -1,6 +1,12 @@
 <template>
 	<v-app>
-		<DefaultBar />
+		<v-app-bar scroll-behavior="elevate">
+			<AppContentContainerBounds>
+				<v-app-bar-title>
+					<v-img :width="200" cover src="/public/transfeera-logo-verde.svg"></v-img>
+				</v-app-bar-title>
+			</AppContentContainerBounds>
+		</v-app-bar>
 
 		<v-main>
 			<router-view />
@@ -9,5 +15,6 @@
 </template>
 
 <script lang="ts" setup>
-  import DefaultBar from './AppBar.vue'
+import AppContentContainerBounds from './AppContentContainerBounds.vue';
+
 </script>
