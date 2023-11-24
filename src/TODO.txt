@@ -1,8 +1,5 @@
 TODO:
 
-Paginação diferente em baixo dos favorecidos
-Foto dos banquinhos
-
 Excluir favorecidos selecionados na listagem de favorecidos
 Excluir favorecido selecionado (seja rascunho ou validado)
 
@@ -12,5 +9,9 @@ Editar favorecido (seja rascunho ou validado)
 Modal de confirmação de exclusão de favorecido/favorecidos
 
 Após qualquer ação que modifique os favorecidos:
+	mostrar feedback de loading/sucesso/erro ao realizar a ação no favorecido (no figma é uma nofificação)
 	recarregar a lista de favorecidos
-	abrir notificação informando sucesso/erro ao realizar a ação no favorecido
+
+(ver se precisa) Na inicialização carregar o db.json com os dados do db_original.json
+
+Testes

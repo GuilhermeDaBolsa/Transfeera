@@ -55,6 +55,7 @@
 		<v-data-table
 			v-else
 			v-model="selectedReceivers"
+			v-model:page="pageSelected"
 			:loading="receivers.isLoading"
 			loading-text="Carregando favorecidos"
 			no-data-text="Nenhum favorecido cadastrado"
@@ -62,8 +63,8 @@
 			:items="receivers.response ? receivers.response : []"
 			:search="receiversSearch"
 			show-select
-			items-per-page="7"
-			height="420"
+			:items-per-page="receiversPerPage"
+			:height="64 * receiversPerPage"
 		>
 			<template v-slot:item.name="{ value, item }">
 				<span @click="editReceiverModal?.open(item)" style="cursor: pointer;">
@@ -71,9 +72,16 @@
 				</span>
 			</template>
 			<template v-slot:item.tax_id="{ value }">{{ value ? cpfCnpjMask.masked(value) : '' }}</template>
+			<template v-slot:item.bank_code="{ value }"><v-avatar v-if="value" :image="getBankLogo(value)" size="small" /></template>
 			<template v-slot:item.branch="{ value }">{{ value ? branchMask.masked(value) : '' }}</template>
 			<template v-slot:item.account="{ value }">{{ value ? accountMask.masked(value) : '' }}</template>
 			<template v-slot:item.status="{ value }"><ReceiverStatusComponent :status="value" /></template>
+
+			<template v-slot:bottom>
+				<div class="text-center pt-3 pb-5">
+					<v-pagination v-model="pageSelected" :length="pageCount"></v-pagination>
+				</div>
+			</template>
 		</v-data-table>
 	</AppContentContainerBounds>
 
@@ -83,7 +91,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, inject, reactive } from 'vue';
+import { ref, inject, reactive, computed } from 'vue';
 import { AxiosStatic } from 'axios';
 
 import AppContentContainerBounds from '@/layouts/default/AppContentContainerBounds.vue';
@@ -94,6 +102,7 @@ import ReceiverStatusComponent from "@/components/ReceiverStatusComponent.vue";
 import Receiver from "@/models/Receiver";
 import Requester from "@/utils/Requester";
 import { cpfCnpjMask, branchMask, accountMask } from "@/utils/Masks";
+import { getBankLogo } from "@/utils/Banks";
 
 const axios = inject('axios') as AxiosStatic;
 
@@ -101,6 +110,10 @@ const receivers = reactive(new Requester<Receiver[]>(axios));
 
 const receiversSearch = ref("");
 const selectedReceivers = ref<Receiver[]>([]);
+const receiversPerPage = 6;
+const pageCount = computed(() => Math.ceil((receivers.response?.length ?? 0) / receiversPerPage));
+const pageSelected = ref(1);
+
 
 const createReceiverModal = ref<HTMLFormElement>();
 const editReceiverModal = ref<HTMLFormElement>();
