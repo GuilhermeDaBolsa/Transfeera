@@ -65,25 +65,20 @@
 			items-per-page="7"
 			height="420"
 		>
+			<template v-slot:item.name="{ value, item }">
+				<span @click="editReceiverModal?.open(item)" style="cursor: pointer;">
+					{{ value }}
+				</span>
+			</template>
 			<template v-slot:item.tax_id="{ value }">{{ value ? cpfCnpjMask.masked(value) : '' }}</template>
 			<template v-slot:item.branch="{ value }">{{ value ? branchMask.masked(value) : '' }}</template>
 			<template v-slot:item.account="{ value }">{{ value ? accountMask.masked(value) : '' }}</template>
-
-			<template v-slot:item.status="{ value }">
-				<v-chip
-					class="justify-center"
-					:color="value == ReceiverStatus.validated ? 'valid' : '#72818d'"
-					variant="flat"
-					style="width: 100%;
-					text-transform: capitalize;"
-				>
-					{{ value }}
-				</v-chip>
-			</template>
+			<template v-slot:item.status="{ value }"><ReceiverStatusComponent :status="value" /></template>
 		</v-data-table>
 	</AppContentContainerBounds>
 
 	<CreateReceiverModal ref="createReceiverModal"/>
+	<EditReceiverModal ref="editReceiverModal"/>
 	<!-- <RequestFeedBackDialog ref="dialogRefExample"/> -->
 </template>
 
@@ -93,9 +88,10 @@ import { AxiosStatic } from 'axios';
 
 import AppContentContainerBounds from '@/layouts/default/AppContentContainerBounds.vue';
 import CreateReceiverModal from '@/components/CreateReceiverModal.vue';
+import EditReceiverModal from '@/components/EditReceiverModal.vue';
+import ReceiverStatusComponent from "@/components/ReceiverStatusComponent.vue";
 
 import Receiver from "@/models/Receiver";
-import ReceiverStatus from "@/models/ReceiverStatus";
 import Requester from "@/utils/Requester";
 import { cpfCnpjMask, branchMask, accountMask } from "@/utils/Masks";
 
@@ -107,6 +103,7 @@ const receiversSearch = ref("");
 const selectedReceivers = ref<Receiver[]>([]);
 
 const createReceiverModal = ref<HTMLFormElement>();
+const editReceiverModal = ref<HTMLFormElement>();
 
 const receiversTableHeaders = [
 	{ title: "Favorecido", key: "name" },

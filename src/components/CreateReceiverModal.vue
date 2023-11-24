@@ -114,7 +114,7 @@ const pixKeyType = ref();
 const pixKey = ref("");
 
 async function validateAndSaveReceiver() {
-	const { valid } = await createReceiverForm.value?.validate();
+	const { valid } = await createReceiverForm.value!.validate();
 
 	if(valid) {
 		//TODO FAZER REQUISIÇÃO DE INSERIR + REQUEST DIALOG
