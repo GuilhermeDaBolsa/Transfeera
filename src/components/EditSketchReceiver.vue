@@ -63,14 +63,13 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, defineExpose, PropType } from "vue";
+import { ref, computed, watch, defineExpose, PropType } from "vue";
 import { vMaska } from "maska";
 
 import SketchReceiver from "@/models/SketchReceiver";
 import { PixKeyType, PixKeyTypeLabels } from "@/models/PixKeyType";
 import { cpfMaskPattern, cpfCnpjMaskPatterns } from "@/utils/Masks";
 import { isValidCpf, isValidCnpj, isValidEmail } from "@/utils/Validators";
-import { watch } from "vue";
 
 const props = defineProps({
 	receiver: { type: Object as PropType<SketchReceiver>, required: true }
@@ -92,17 +91,27 @@ const emailRule = (value: string) => isValidEmail(value) || "E-mail inválido";
 const editedReceiver = ref(new SketchReceiver("", "", "", "", null));
 
 async function isNewReceiverDataValid() {
-	const { valid } = await receiverForm.value!.validate();
+	if(!receiverForm.value)
+		return false;
+
+	const { valid } = await receiverForm.value.validate();
 	return valid;
 }
 
- function getReceiverData() {
+function getReceiverData() {
 	return editedReceiver.value;
 }
 
-watch(props.receiver, () => {
-	editedReceiver.value = props.receiver;
+function updateInternalReceiverWithProps() {
+	const pReceiver = props.receiver;
+	editedReceiver.value = new SketchReceiver(pReceiver.name, pReceiver.email, pReceiver.tax_id, pReceiver.pix_key, pReceiver.pix_key_type);
+}
+
+watch(() => props.receiver, () => {
+	updateInternalReceiverWithProps();
 });
+
+updateInternalReceiverWithProps();
 
 defineExpose({ isNewReceiverDataValid, getReceiverData });
 </script>

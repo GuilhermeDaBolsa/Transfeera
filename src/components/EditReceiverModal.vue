@@ -21,8 +21,18 @@
 
 				<v-divider class="mt-4" />
 
-				<EditValidatedReceiver v-if="receiver.status == ReceiverStatus.validated" class="pt-12" :receiver="receiver" />
-				<EditSketchReceiver v-else :receiver="receiver" />
+				<EditValidatedReceiver
+					v-if="receiver.status == ReceiverStatus.validated"
+					class="pt-6"
+					:receiver="receiver"
+					ref="editReceiverForm"
+				/>
+
+				<EditSketchReceiver
+					v-else
+					:receiver="receiver"
+					ref="editReceiverForm"
+				/>
 
 				<v-card-actions class="px-0 pb-8 pt-5">
 					<v-row>
@@ -58,11 +68,14 @@ const receiver = ref<Receiver>();
 const newEmail = ref("");
 
 async function validateAndSaveReceiver() {
-	const { valid } = await editReceiverForm.value!.validate();
+	if(!editReceiverForm.value)
+		return false;
+
+	const valid = await editReceiverForm.value.isNewReceiverDataValid();
 
 	if(valid) {
 		//TODO FAZER REQUISIÇÃO DE MODIFICAR + REQUEST DIALOG
-		console.log(newEmail.value);
+		console.log(editReceiverForm.value.getReceiverData());
 	}
 }
 

@@ -40,13 +40,13 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, defineExpose, PropType } from "vue";
+import { ref, watch, defineExpose, PropType } from "vue";
 
 import Receiver from "@/models/Receiver";
 import { cpfCnpjMask, branchMask, accountMask } from "@/utils/Masks";
 import { isValidEmail } from "@/utils/Validators";
 
-defineProps({
+const props = defineProps({
 	receiver: { type: Object as PropType<Receiver>, required: true }
 });
 
@@ -58,13 +58,26 @@ const emailRule = (value: string) => isValidEmail(value) || "E-mail inválido";
 const newEmail = ref("");
 
 async function isNewReceiverDataValid() {
-	const { valid } = await receiverForm.value!.validate();
+	if(!receiverForm.value)
+		return false;
+
+	const { valid } = await receiverForm.value.validate();
 	return valid;
 }
 
- function getReceiverData() {
+function getReceiverData() {
 	return newEmail.value;
 }
+
+function updateInternalReceiverWithProps() {
+	newEmail.value = props.receiver.email;
+}
+
+watch(() => props.receiver, () => {
+	updateInternalReceiverWithProps();
+});
+
+updateInternalReceiverWithProps();
 
 defineExpose({ isNewReceiverDataValid, getReceiverData });
 </script>
