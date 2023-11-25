@@ -41,12 +41,14 @@
 						</v-col>
 						<v-spacer></v-spacer>
 						<v-col class="d-flex justify-end" cols="auto">
-							<v-btn color="red" variant="flat" size="x-large" icon="mdi-delete-forever" rounded min-width="64" max-height="52"/>
+							<v-btn color="red" variant="flat" size="x-large" icon="mdi-delete-forever" rounded min-width="64" max-height="52" @click="deleteReceiver"/>
 							<v-btn color="valid" variant="flat" size="x-large" min-width="150" @click="validateAndSaveReceiver">Salvar</v-btn>
 						</v-col>
 					</v-row>
 				</v-card-actions>
 			</div>
+
+			<ConfirmReceiversDeletionModal ref="confirmReceiversDeletionModal"/>
 		</v-card>
 	</v-dialog>
 </template>
@@ -56,6 +58,7 @@ import { ref, defineExpose } from "vue";
 
 import ReceiverStatusComponent from "@/components/ReceiverStatusComponent.vue";
 import EditValidatedReceiver from "@/components/EditValidatedReceiver.vue";
+import ConfirmReceiversDeletionModal from '@/components/ConfirmReceiversDeletionModal.vue';
 
 import Receiver from "@/models/Receiver";
 import ReceiverStatus from '@/models/ReceiverStatus';
@@ -63,6 +66,7 @@ import EditSketchReceiver from "./EditSketchReceiver.vue";
 
 const show = ref(false);
 const editReceiverForm = ref<HTMLFormElement>();
+const confirmReceiversDeletionModal = ref<HTMLFormElement>();
 
 const receiver = ref<Receiver>();
 const newEmail = ref("");
@@ -77,6 +81,10 @@ async function validateAndSaveReceiver() {
 		//TODO FAZER REQUISIÇÃO DE MODIFICAR + REQUEST DIALOG
 		console.log(editReceiverForm.value.getReceiverData());
 	}
+}
+
+function deleteReceiver() {
+	confirmReceiversDeletionModal.value?.open([receiver.value]);
 }
 
 function open(toEditReceiver: Receiver) {

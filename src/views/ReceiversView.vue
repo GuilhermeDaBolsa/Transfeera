@@ -61,6 +61,7 @@
 			no-data-text="Nenhum favorecido cadastrado"
 			:headers="receiversTableHeaders"
 			:items="receivers.response ? receivers.response : []"
+			return-object
 			:search="receiversSearch"
 			show-select
 			:items-per-page="receiversPerPage"
@@ -89,6 +90,7 @@
 
 	<CreateReceiverModal ref="createReceiverModal"/>
 	<EditReceiverModal ref="editReceiverModal"/>
+	<ConfirmReceiversDeletionModal ref="confirmReceiversDeletionModal"/>
 	<!-- <RequestFeedBackDialog ref="dialogRefExample"/> -->
 </template>
 
@@ -97,9 +99,10 @@ import { ref, inject, reactive, computed } from 'vue';
 import { AxiosStatic } from 'axios';
 
 import AppContentContainerBounds from '@/layouts/default/AppContentContainerBounds.vue';
+import ReceiverStatusComponent from "@/components/ReceiverStatusComponent.vue";
 import CreateReceiverModal from '@/components/CreateReceiverModal.vue';
 import EditReceiverModal from '@/components/EditReceiverModal.vue';
-import ReceiverStatusComponent from "@/components/ReceiverStatusComponent.vue";
+import ConfirmReceiversDeletionModal from '@/components/ConfirmReceiversDeletionModal.vue';
 
 import Receiver from "@/models/Receiver";
 import Requester from "@/utils/Requester";
@@ -119,6 +122,7 @@ const pageSelected = ref(1);
 
 const createReceiverModal = ref<HTMLFormElement>();
 const editReceiverModal = ref<HTMLFormElement>();
+const confirmReceiversDeletionModal = ref<HTMLFormElement>();
 
 const receiversTableHeaders = [
 	{ title: "Favorecido", key: "name" },
@@ -130,7 +134,7 @@ const receiversTableHeaders = [
 ];
 
 function deleteSelectedReceivers() {
-	console.log(selectedReceivers.value);
+	confirmReceiversDeletionModal.value?.open(selectedReceivers.value);
 }
 
 function getReceivers() {

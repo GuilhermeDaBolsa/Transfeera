@@ -1,6 +1,5 @@
 TODO:
 
-Modal de confirmação de exclusão de favorecido/favorecidos
 Excluir favorecidos selecionados na listagem de favorecidos
 Excluir favorecido selecionado (seja rascunho ou validado)
 
