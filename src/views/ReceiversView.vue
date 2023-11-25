@@ -72,7 +72,7 @@
 				</span>
 			</template>
 			<template v-slot:item.tax_id="{ value }">{{ value ? cpfCnpjMask.masked(value) : '' }}</template>
-			<template v-slot:item.bank_code="{ value }"><v-avatar v-if="value" :image="getBankLogo(value)" size="small" /></template>
+			<template v-slot:item.bank_code="{ value }"><v-avatar v-if="value" :image="getBankLogo(value)" rounded="lg" size="small" /></template>
 			<template v-slot:item.branch="{ value }">{{ value ? branchMask.masked(value) : '' }}</template>
 			<template v-slot:item.account="{ value }">{{ value ? accountMask.masked(value) : '' }}</template>
 			<template v-slot:item.status="{ value }"><ReceiverStatusComponent :status="value" /></template>
@@ -84,6 +84,8 @@
 			</template>
 		</v-data-table>
 	</AppContentContainerBounds>
+
+	<v-img class="ma-auto" :width="120" cover src="/transfeera-logo-cinza.png"></v-img>
 
 	<CreateReceiverModal ref="createReceiverModal"/>
 	<EditReceiverModal ref="editReceiverModal"/>
