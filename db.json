@@ -19,7 +19,7 @@
     {
       "id": "37f7e55c-b2a9-4cc6-a8fd-8062925f86c8",
       "name": "Rafael Costa",
-      "email": "rafael.costa@exemplo.com",
+      "email": "rafael.costa@exemplo.com2",
       "tax_id": "79915139000115",
       "branch": "3402",
       "account": "517638",
@@ -35,7 +35,7 @@
     {
       "id": "4765673f-8a2f-4048-8ce9-e94da4adfe29",
       "name": "Gabriela Santos",
-      "email": "gabriela.santos@exemplo.com",
+      "email": "gabriela.santos@exemplo.com2",
       "tax_id": "52654930009",
       "branch": "5649",
       "account": "216893",
@@ -51,7 +51,7 @@
     {
       "id": "cd1cf409-7d28-444a-be68-8d51a0d752cb",
       "name": "Guilherme Ferreira",
-      "email": "guilherme.ferreira@exemplo.com",
+      "email": "guilherme.ferreira@exemplo.com2",
       "tax_id": "32857141076",
       "branch": "8537",
       "account": "46597",

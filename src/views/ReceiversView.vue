@@ -68,9 +68,7 @@
 			:height="64 * receiversPerPage"
 		>
 			<template v-slot:item.name="{ value, item }">
-				<span @click="openEditReceiverModal(item)" style="cursor: pointer;">
-					{{ value }}
-				</span>
+				<span @click="openEditReceiverModal(item)" style="cursor: pointer;">{{ value }}</span>
 			</template>
 			<template v-slot:item.tax_id="{ value }">{{ value ? cpfCnpjMask.masked(value) : '' }}</template>
 			<template v-slot:item.bank_code="{ value }"><v-avatar v-if="value" :image="getBankLogo(value)" rounded="lg" size="small" /></template>
@@ -91,7 +89,7 @@
 	<CreateReceiverModal ref="createReceiverModal" @saveReceiver="insertReceiver"/>
 	<EditReceiverModal ref="editReceiverModal" @editReceiver="editReceiver" @deleteReceiver="deleteReceivers"/>
 	<ConfirmReceiversDeletionModal ref="confirmReceiversDeletionModal" @confirmDeletion="deleteReceivers"/>
-	<!-- <RequestFeedBackDialog ref="dialogRefExample"/> -->
+	<RequestFeedbackMessage ref="requestFeedbackMessage"/>
 </template>
 
 <script lang="ts" setup>
@@ -103,9 +101,10 @@ import ReceiverStatusComponent from "@/components/ReceiverStatusComponent.vue";
 import CreateReceiverModal from '@/components/CreateReceiverModal.vue';
 import EditReceiverModal from '@/components/EditReceiverModal.vue';
 import ConfirmReceiversDeletionModal from '@/components/ConfirmReceiversDeletionModal.vue';
+import RequestFeedbackMessage from '@/components/RequestFeedbackMessage.vue';
 
-import { Receiver } from "@/models/Receiver";
 import Requester from "@/utils/Requester";
+import { Receiver } from "@/models/Receiver";
 import { cpfCnpjMask, branchMask, accountMask } from "@/utils/Masks";
 import { getBankLogo } from "@/utils/Banks";
 
@@ -126,6 +125,7 @@ const deleteReceiversReq = reactive(new Requester<boolean>(axios));
 const createReceiverModal = ref<HTMLFormElement>();
 const editReceiverModal = ref<HTMLFormElement>();
 const confirmReceiversDeletionModal = ref<HTMLFormElement>();
+const requestFeedbackMessage = ref<HTMLFormElement>();
 
 const receiversTableHeaders = [
 	{ title: "Favorecido", key: "name" },
@@ -145,51 +145,64 @@ function openDeleteReceiversConfirmationModal() {
 }
 
 function insertReceiver(receiver: Receiver) {
-	saveReceiverReq.request({ method: "post", url: "/receivers", data: receiver, onSuccess: getReceivers });
-}
+	requestFeedbackMessage.value?.changeStateToLoading("Salvando novos dados...");
+	requestFeedbackMessage.value?.open();
 
-function editReceiver(receiver: Receiver) {
-	editReceiverReq.request({ method: "put", url: "/receivers/" + receiver.id, data: receiver, onSuccess: getReceivers });
-	getReceivers();
-}
-
-function deleteReceivers(receivers: Receiver[]) {
-	Promise.all(
-		receivers.map(receiver =>
-			deleteReceiversReq.request({ method: "delete", url: "/receivers/" + receiver.id, data: receiver }))
-	).then(responses => getReceivers());
-}
-
-function getReceivers() {
-	receivers.request({ method: "get", url: "/receivers" });
-}
-
-/* 
-const dialogRefExample = ref<HTMLFormElement>();
-
-function feedBackDialogExample() {
-	dialogRefExample.value?.changeStateToLoading("loading example...");
-	dialogRefExample.value?.open();
-
-	requesterExample.request({
+	saveReceiverReq.request({
 		method: "post",
-		url: "urlExample",
-		data: { exampleKey: "exampleValue"},
+		url: "/receivers",
+		data: receiver,
 		onSuccess: () => {
-			dialogRefExample.value?.changeStateToSuccess("success example!");
-
-			setTimeout(() => {
-				dialogRefExample.value?.close();
-				
-				//After success and conclude code space
-			}, 1200);
+			requestFeedbackMessage.value?.changeStateToSuccess("Favorecido salvo com sucesso!");
+			setTimeout(() => { requestFeedbackMessage.value?.close(); }, 2400);
+			getReceivers();
 		},
 		onError: () => {
-			dialogRefExample.value?.changeStateToError("error example: " + requesterExample.errorMessage);
+			requestFeedbackMessage.value?.changeStateToError("Ocorreu um erro ao tentar salvar o favorecido.");
 		}
 	});
 }
-*/
+
+function editReceiver(receiver: Receiver) {
+	requestFeedbackMessage.value?.changeStateToLoading("Salvando novos dados...");
+	requestFeedbackMessage.value?.open();
+
+	editReceiverReq.request({
+		method: "put",
+		url: "/receivers/" + receiver.id,
+		data: receiver,
+		onSuccess: () => {
+			requestFeedbackMessage.value?.changeStateToSuccess("Favorecido alterado com sucesso!");
+			setTimeout(() => { requestFeedbackMessage.value?.close(); }, 2400);
+			getReceivers();
+		},
+		onError: () => {
+			requestFeedbackMessage.value?.changeStateToError("Ocorreu um erro ao tentar editar o favorecido.");
+		}
+	});
+}
+
+function deleteReceivers(receivers: Receiver[]) {
+	requestFeedbackMessage.value?.changeStateToLoading("Excluindo favorecidos...");
+	requestFeedbackMessage.value?.open();
+
+	Promise.all(
+		receivers.map(receiver =>
+			deleteReceiversReq.request({ method: "delete", url: "/receivers/" + receiver.id, data: receiver }))
+	).then(responses => {
+		requestFeedbackMessage.value?.changeStateToSuccess("Favorecidos excluidos com sucesso!");
+		setTimeout(() => { requestFeedbackMessage.value?.close(); }, 2400);
+		getReceivers();
+	})
+	.catch(error => {
+		requestFeedbackMessage.value?.changeStateToError("Ocorreu um erro ao tentar excluir os favorecidos.");
+	});
+}
+
+function getReceivers() {
+	selectedReceivers.value = [];
+	receivers.request({ method: "get", url: "/receivers" });
+}
 
 getReceivers();
 </script>
