@@ -41,14 +41,14 @@
 						</v-col>
 						<v-spacer></v-spacer>
 						<v-col class="d-flex justify-end" cols="auto">
-							<v-btn color="red" variant="flat" size="x-large" icon="mdi-delete-forever" rounded min-width="64" max-height="52" @click="deleteReceiver"/>
-							<v-btn color="valid" variant="flat" size="x-large" min-width="150" @click="validateAndSaveReceiver">Salvar</v-btn>
+							<v-btn color="red" variant="flat" size="x-large" icon="mdi-delete-forever" rounded min-width="64" max-height="52" @click="openDeleteReceiversConfirmationModal"/>
+							<v-btn color="valid" variant="flat" size="x-large" min-width="150" @click="validateAndConfirmEdit">Salvar</v-btn>
 						</v-col>
 					</v-row>
 				</v-card-actions>
 			</div>
 
-			<ConfirmReceiversDeletionModal ref="confirmReceiversDeletionModal"/>
+			<ConfirmReceiversDeletionModal ref="confirmReceiversDeletionModal" @confirmDeletion="onConfirmDeletion"/>
 		</v-card>
 	</v-dialog>
 </template>
@@ -63,33 +63,45 @@ import ConfirmReceiversDeletionModal from '@/components/ConfirmReceiversDeletion
 import Receiver from "@/models/Receiver";
 import ReceiverStatus from '@/models/ReceiverStatus';
 import EditSketchReceiver from "./EditSketchReceiver.vue";
+import SketchReceiver from "@/models/SketchReceiver";
+
+const emit = defineEmits(["editReceiver", "deleteReceiver"]);
 
 const show = ref(false);
 const editReceiverForm = ref<HTMLFormElement>();
 const confirmReceiversDeletionModal = ref<HTMLFormElement>();
 
 const receiver = ref<Receiver>();
-const newEmail = ref("");
 
-async function validateAndSaveReceiver() {
+async function validateAndConfirmEdit() {
 	if(!editReceiverForm.value)
 		return false;
 
 	const valid = await editReceiverForm.value.isNewReceiverDataValid();
 
-	if(valid) {
-		//TODO FAZER REQUISIÇÃO DE MODIFICAR + REQUEST DIALOG
-		console.log(editReceiverForm.value.getReceiverData());
+	if(!valid)
+		return false;
+
+	const editedReceiver = editReceiverForm.value.getReceiverData() as SketchReceiver;
+
+	if(!Receiver.isSameReceiver(receiver.value!, editedReceiver)) {
+		emit("editReceiver", editedReceiver);
 	}
+
+	close();
 }
 
-function deleteReceiver() {
+function openDeleteReceiversConfirmationModal() {
 	confirmReceiversDeletionModal.value?.open([receiver.value]);
+}
+
+function onConfirmDeletion(receivers: Receiver[]) {
+	emit("deleteReceiver", receivers);
+	close();
 }
 
 function open(toEditReceiver: Receiver) {
 	receiver.value = toEditReceiver;
-	newEmail.value = receiver.value.email; 
 	show.value = true;
 }
 

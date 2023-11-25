@@ -1,4 +1,6 @@
-import ReceiverStatus from "./ReceiverStatus";
+import ReceiverStatus from "@/models/ReceiverStatus";
+import SketchReceiver from "@/models/SketchReceiver";
+import { cpfCnpjMask } from "@/utils/Masks";
 
 class Receiver{
 	constructor(
@@ -17,6 +19,14 @@ class Receiver{
 		public created_at: string,
 		public updated_at: string
 	){}
+
+	public static isSameReceiver(r1: Receiver, r2: SketchReceiver) {
+		return r1.name == r2.name &&
+			r1.email == r2.email &&
+			cpfCnpjMask.unmasked(r1.tax_id) == cpfCnpjMask.unmasked(r2.tax_id) &&
+			r1.pix_key_type == r2.pix_key_type &&
+			r1.pix_key == r2.pix_key;
+	}
 }
 
 export default Receiver;

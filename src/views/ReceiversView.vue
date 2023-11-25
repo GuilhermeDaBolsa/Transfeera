@@ -39,7 +39,7 @@
 				variant="flat"
 				:disabled="selectedReceivers.length == 0"
 				style="font-size: 16px;"
-				@click="deleteSelectedReceivers"
+				@click="openDeleteReceiversConfirmationModal"
 			>
 				Excluir selecionados
 			</v-btn>
@@ -68,7 +68,7 @@
 			:height="64 * receiversPerPage"
 		>
 			<template v-slot:item.name="{ value, item }">
-				<span @click="editReceiverModal?.open(item)" style="cursor: pointer;">
+				<span @click="openEditReceiverModal(item)" style="cursor: pointer;">
 					{{ value }}
 				</span>
 			</template>
@@ -88,9 +88,9 @@
 
 	<v-img class="ma-auto" :width="120" cover src="/transfeera-logo-cinza.png"></v-img>
 
-	<CreateReceiverModal ref="createReceiverModal"/>
-	<EditReceiverModal ref="editReceiverModal"/>
-	<ConfirmReceiversDeletionModal ref="confirmReceiversDeletionModal"/>
+	<CreateReceiverModal ref="createReceiverModal" @saveReceiver="insertReceiver"/>
+	<EditReceiverModal ref="editReceiverModal" @editReceiver="editReceiver" @deleteReceiver="deleteReceivers"/>
+	<ConfirmReceiversDeletionModal ref="confirmReceiversDeletionModal" @confirmDeletion="deleteReceivers"/>
 	<!-- <RequestFeedBackDialog ref="dialogRefExample"/> -->
 </template>
 
@@ -119,7 +119,6 @@ const receiversPerPage = 6;
 const pageCount = computed(() => Math.ceil((receivers.response?.length ?? 0) / receiversPerPage));
 const pageSelected = ref(1);
 
-
 const createReceiverModal = ref<HTMLFormElement>();
 const editReceiverModal = ref<HTMLFormElement>();
 const confirmReceiversDeletionModal = ref<HTMLFormElement>();
@@ -133,8 +132,30 @@ const receiversTableHeaders = [
 	{ title: "Status do favorecido", key: "status" },
 ];
 
-function deleteSelectedReceivers() {
+function openEditReceiverModal(receiver: Receiver) {
+	editReceiverModal.value?.open(receiver);
+}
+
+function openDeleteReceiversConfirmationModal() {
 	confirmReceiversDeletionModal.value?.open(selectedReceivers.value);
+}
+
+function insertReceiver(receiver: Receiver) {
+	console.log("---insert receiver---");
+	console.log(receiver);
+	getReceivers();
+}
+
+function editReceiver(receiver: Receiver) {
+	console.log("---edit receiver---");
+	console.log(receiver);
+	getReceivers();
+}
+
+function deleteReceivers(receivers: Receiver[]) {
+	console.log("---delete receivers---");
+	console.log(receivers);
+	getReceivers();
 }
 
 function getReceivers() {

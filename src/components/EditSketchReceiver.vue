@@ -90,6 +90,13 @@ const emailRule = (value: string) => isValidEmail(value) || "E-mail inválido";
 
 const editedReceiver = ref(new SketchReceiver("", "", "", "", null));
 
+function resetFormValidation() {
+	if(!receiverForm.value)
+		return false;
+
+	receiverForm.value.resetValidation();
+}
+
 async function isNewReceiverDataValid() {
 	if(!receiverForm.value)
 		return false;
@@ -113,7 +120,7 @@ watch(() => props.receiver, () => {
 
 updateInternalReceiverWithProps();
 
-defineExpose({ isNewReceiverDataValid, getReceiverData });
+defineExpose({ isNewReceiverDataValid, getReceiverData, resetFormValidation });
 </script>
 
 <style></style>

@@ -22,7 +22,7 @@
 				<v-card-actions class="px-0 pb-8 pt-5">
 					<v-btn color="primary" variant="outlined" size="x-large" min-width="150" @click="close">Cancelar</v-btn>
 					<v-spacer></v-spacer>
-					<v-btn color="red" variant="flat" size="x-large" min-width="150" @click="deleteReceivers">Confirmar exclusão</v-btn>
+					<v-btn color="red" variant="flat" size="x-large" min-width="150" @click="confirmDeletion">Confirmar exclusão</v-btn>
 				</v-card-actions>
 			</div>
 		</v-card>
@@ -34,12 +34,15 @@ import { ref, defineExpose } from "vue";
 
 import Receiver from "@/models/Receiver";
 
+const emit = defineEmits(["confirmDeletion"]);
+
 const show = ref(false);
 
 const receivers = ref<Receiver[]>();
 
-function deleteReceivers() {
-	console.log("delete receivers");
+function confirmDeletion() {
+	emit("confirmDeletion", receivers.value);
+	close();
 }
 
 function open(toDeleteReceivers: Receiver[]) {

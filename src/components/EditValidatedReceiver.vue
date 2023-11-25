@@ -27,7 +27,7 @@
 			<v-col cols="12" sm="7">
 				<div class="statement">E-mail do favorecido</div>
 				<v-text-field
-					v-model="newEmail"
+					v-model="editedReceiver.email"
 					placeholder="favorecido@email.com"
 					variant="outlined"
 					density="compact"
@@ -43,6 +43,7 @@
 import { ref, watch, defineExpose, PropType } from "vue";
 
 import Receiver from "@/models/Receiver";
+import SketchReceiver from "@/models/SketchReceiver";
 import { cpfCnpjMask, branchMask, accountMask } from "@/utils/Masks";
 import { isValidEmail } from "@/utils/Validators";
 
@@ -55,7 +56,7 @@ const receiverForm = ref<HTMLFormElement>();
 const requiredRule = (value: string) => !!value || "Campo obrigatório";
 const emailRule = (value: string) => isValidEmail(value) || "E-mail inválido";
 
-const newEmail = ref("");
+const editedReceiver = ref(new SketchReceiver("", "", "", "", null));
 
 async function isNewReceiverDataValid() {
 	if(!receiverForm.value)
@@ -66,11 +67,12 @@ async function isNewReceiverDataValid() {
 }
 
 function getReceiverData() {
-	return newEmail.value;
+	return editedReceiver.value;
 }
 
 function updateInternalReceiverWithProps() {
-	newEmail.value = props.receiver.email;
+	const pReceiver = props.receiver;
+	editedReceiver.value = new SketchReceiver(pReceiver.name, pReceiver.email, pReceiver.tax_id, pReceiver.pix_key, pReceiver.pix_key_type);
 }
 
 watch(() => props.receiver, () => {

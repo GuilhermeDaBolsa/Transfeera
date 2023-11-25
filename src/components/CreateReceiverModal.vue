@@ -33,6 +33,8 @@ import EditSketchReceiver from "@/components/EditSketchReceiver.vue";
 
 import SketchReceiver from "@/models/SketchReceiver";
 
+const emit = defineEmits(["saveReceiver"]);
+
 const show = ref(false);
 
 const newReceiver = ref(new SketchReceiver("", "", "", "", null));
@@ -45,12 +47,14 @@ async function validateAndSaveReceiver() {
 	const valid = await receiverComponent.value.isNewReceiverDataValid();
 
 	if(valid) {
-		//TODO FAZER REQUISIÇÃO DE INSERIR + REQUEST DIALOG
-		console.log(receiverComponent.value.getReceiverData());
+		emit("saveReceiver", receiverComponent.value.getReceiverData());
+		close();
 	}
 }
 
 function open() {
+	newReceiver.value = new SketchReceiver("", "", "", "", null);
+	receiverComponent.value?.resetFormValidation();
 	show.value = true;
 }
 
