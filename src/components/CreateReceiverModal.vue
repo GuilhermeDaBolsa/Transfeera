@@ -31,13 +31,14 @@ import { ref, defineExpose } from "vue";
 import AppContentContainerBounds from '@/layouts/default/AppContentContainerBounds.vue';
 import EditSketchReceiver from "@/components/EditSketchReceiver.vue";
 
-import SketchReceiver from "@/models/SketchReceiver";
+import { Receiver } from "@/models/Receiver";
+import ReceiverStatus from "@/models/ReceiverStatus";
 
 const emit = defineEmits(["saveReceiver"]);
 
 const show = ref(false);
 
-const newReceiver = ref(new SketchReceiver("", "", "", "", null));
+const newReceiver = ref<Receiver>({} as Receiver);
 const receiverComponent = ref<HTMLFormElement>();
 
 async function validateAndSaveReceiver() {
@@ -53,7 +54,7 @@ async function validateAndSaveReceiver() {
 }
 
 function open() {
-	newReceiver.value = new SketchReceiver("", "", "", "", null);
+	newReceiver.value = { status: ReceiverStatus.sketch } as Receiver;
 	receiverComponent.value?.resetFormValidation();
 	show.value = true;
 }

@@ -12,7 +12,7 @@
 			</v-col>
 			<v-col cols="5">
 				<div class="statement">Agência</div>
-				<div class="information">{{ branchMask.masked(receiver.branch) }}</div>
+				<div class="information">{{ receiver.branch ? branchMask.masked(receiver.branch) : '' }}</div>
 			</v-col>
 
 			<v-col cols="7">
@@ -21,7 +21,7 @@
 			</v-col>
 			<v-col cols="5">
 				<div class="statement">{{ receiver.account_type }}</div>
-				<div class="information">{{ accountMask.masked(receiver.account) }}</div>
+				<div class="information">{{ receiver.account ? accountMask.masked(receiver.account) : '' }}</div>
 			</v-col>
 
 			<v-col cols="12" sm="7">
@@ -42,8 +42,7 @@
 <script lang="ts" setup>
 import { ref, watch, defineExpose, PropType } from "vue";
 
-import Receiver from "@/models/Receiver";
-import SketchReceiver from "@/models/SketchReceiver";
+import { Receiver } from "@/models/Receiver";
 import { cpfCnpjMask, branchMask, accountMask } from "@/utils/Masks";
 import { isValidEmail } from "@/utils/Validators";
 
@@ -56,7 +55,7 @@ const receiverForm = ref<HTMLFormElement>();
 const requiredRule = (value: string) => !!value || "Campo obrigatório";
 const emailRule = (value: string) => isValidEmail(value) || "E-mail inválido";
 
-const editedReceiver = ref(new SketchReceiver("", "", "", "", null));
+const editedReceiver = ref<Receiver>({} as Receiver);
 
 async function isNewReceiverDataValid() {
 	if(!receiverForm.value)
@@ -71,8 +70,7 @@ function getReceiverData() {
 }
 
 function updateInternalReceiverWithProps() {
-	const pReceiver = props.receiver;
-	editedReceiver.value = new SketchReceiver(pReceiver.name, pReceiver.email, pReceiver.tax_id, pReceiver.pix_key, pReceiver.pix_key_type);
+	editedReceiver.value = {...props.receiver};
 }
 
 watch(() => props.receiver, () => {

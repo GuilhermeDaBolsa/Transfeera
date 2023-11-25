@@ -66,13 +66,13 @@
 import { ref, computed, watch, defineExpose, PropType } from "vue";
 import { vMaska } from "maska";
 
-import SketchReceiver from "@/models/SketchReceiver";
+import { Receiver } from "@/models/Receiver";
 import { PixKeyType, PixKeyTypeLabels } from "@/models/PixKeyType";
 import { cpfMaskPattern, cpfCnpjMaskPatterns } from "@/utils/Masks";
 import { isValidCpf, isValidCnpj, isValidEmail } from "@/utils/Validators";
 
 const props = defineProps({
-	receiver: { type: Object as PropType<SketchReceiver>, required: true }
+	receiver: { type: Object as PropType<Receiver>, required: true }
 });
 
 const receiverForm = ref<HTMLFormElement>();
@@ -85,10 +85,10 @@ const cpfCnpjMask = { mask: cpfCnpjMaskPatterns };
 const requiredRule = (value: string) => !!value || "Campo obrigatório";
 const cpfRule = (value: string) => isValidCpf(value) || "CPF inválido";
 const cnpjRule = (value: string) => isValidCnpj(value) || "CNPJ inválido";
-const cpfCnpjRule = (value: string) => value.length <= cpfMaskPattern.length ? cpfRule(value) : cnpjRule(value);
+const cpfCnpjRule = (value: string) => value?.length <= cpfMaskPattern.length ? cpfRule(value) : cnpjRule(value);
 const emailRule = (value: string) => isValidEmail(value) || "E-mail inválido";
 
-const editedReceiver = ref(new SketchReceiver("", "", "", "", null));
+const editedReceiver = ref<Receiver>({} as Receiver);
 
 function resetFormValidation() {
 	if(!receiverForm.value)
@@ -110,8 +110,7 @@ function getReceiverData() {
 }
 
 function updateInternalReceiverWithProps() {
-	const pReceiver = props.receiver;
-	editedReceiver.value = new SketchReceiver(pReceiver.name, pReceiver.email, pReceiver.tax_id, pReceiver.pix_key, pReceiver.pix_key_type);
+	editedReceiver.value = {...props.receiver};
 }
 
 watch(() => props.receiver, () => {

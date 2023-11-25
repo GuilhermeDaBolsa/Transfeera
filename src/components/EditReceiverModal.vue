@@ -3,7 +3,7 @@
 		<v-card v-if="receiver" flat height="100%">
 			<v-toolbar color="background" flat style="margin-bottom: -27px;">
 				<v-spacer></v-spacer>
-				<v-btn icon color="black" @click="close">
+				<v-btn icon color="black" @click="close" style="z-index: 3;">
 					<v-icon size="large">mdi-close</v-icon>
 				</v-btn>
 			</v-toolbar>
@@ -60,10 +60,9 @@ import ReceiverStatusComponent from "@/components/ReceiverStatusComponent.vue";
 import EditValidatedReceiver from "@/components/EditValidatedReceiver.vue";
 import ConfirmReceiversDeletionModal from '@/components/ConfirmReceiversDeletionModal.vue';
 
-import Receiver from "@/models/Receiver";
+import { Receiver, isSameReceiver } from "@/models/Receiver";
 import ReceiverStatus from '@/models/ReceiverStatus';
 import EditSketchReceiver from "./EditSketchReceiver.vue";
-import SketchReceiver from "@/models/SketchReceiver";
 
 const emit = defineEmits(["editReceiver", "deleteReceiver"]);
 
@@ -82,9 +81,9 @@ async function validateAndConfirmEdit() {
 	if(!valid)
 		return false;
 
-	const editedReceiver = editReceiverForm.value.getReceiverData() as SketchReceiver;
+	const editedReceiver = editReceiverForm.value.getReceiverData() as Receiver;
 
-	if(!Receiver.isSameReceiver(receiver.value!, editedReceiver)) {
+	if(!isSameReceiver(receiver.value!, editedReceiver)) {
 		emit("editReceiver", editedReceiver);
 	}
 

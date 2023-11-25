@@ -50,6 +50,7 @@ class Requester<ResponseType> {
 				if (args.onFinish) args.onFinish();
 
 				this.isLoading = false;
+				return true;
 			});
 	}
 

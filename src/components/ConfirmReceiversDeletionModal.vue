@@ -3,7 +3,7 @@
 		<v-card v-if="receivers && receivers.length > 0" flat height="100%">
 			<v-toolbar color="background" flat style="margin-bottom: -27px;">
 				<v-spacer></v-spacer>
-				<v-btn icon color="black" @click="close">
+				<v-btn icon color="black" @click="close" style="z-index: 3;">
 					<v-icon size="large">mdi-close</v-icon>
 				</v-btn>
 			</v-toolbar>
@@ -32,7 +32,7 @@
 <script lang="ts" setup>
 import { ref, defineExpose } from "vue";
 
-import Receiver from "@/models/Receiver";
+import { Receiver } from "@/models/Receiver";
 
 const emit = defineEmits(["confirmDeletion"]);
 

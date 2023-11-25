@@ -104,7 +104,7 @@ import CreateReceiverModal from '@/components/CreateReceiverModal.vue';
 import EditReceiverModal from '@/components/EditReceiverModal.vue';
 import ConfirmReceiversDeletionModal from '@/components/ConfirmReceiversDeletionModal.vue';
 
-import Receiver from "@/models/Receiver";
+import { Receiver } from "@/models/Receiver";
 import Requester from "@/utils/Requester";
 import { cpfCnpjMask, branchMask, accountMask } from "@/utils/Masks";
 import { getBankLogo } from "@/utils/Banks";
@@ -118,6 +118,10 @@ const selectedReceivers = ref<Receiver[]>([]);
 const receiversPerPage = 6;
 const pageCount = computed(() => Math.ceil((receivers.response?.length ?? 0) / receiversPerPage));
 const pageSelected = ref(1);
+
+const saveReceiverReq = reactive(new Requester<boolean>(axios));
+const editReceiverReq = reactive(new Requester<boolean>(axios));
+const deleteReceiversReq = reactive(new Requester<boolean>(axios));
 
 const createReceiverModal = ref<HTMLFormElement>();
 const editReceiverModal = ref<HTMLFormElement>();
@@ -141,21 +145,19 @@ function openDeleteReceiversConfirmationModal() {
 }
 
 function insertReceiver(receiver: Receiver) {
-	console.log("---insert receiver---");
-	console.log(receiver);
-	getReceivers();
+	saveReceiverReq.request({ method: "post", url: "/receivers", data: receiver, onSuccess: getReceivers });
 }
 
 function editReceiver(receiver: Receiver) {
-	console.log("---edit receiver---");
-	console.log(receiver);
+	editReceiverReq.request({ method: "put", url: "/receivers/" + receiver.id, data: receiver, onSuccess: getReceivers });
 	getReceivers();
 }
 
 function deleteReceivers(receivers: Receiver[]) {
-	console.log("---delete receivers---");
-	console.log(receivers);
-	getReceivers();
+	Promise.all(
+		receivers.map(receiver =>
+			deleteReceiversReq.request({ method: "delete", url: "/receivers/" + receiver.id, data: receiver }))
+	).then(responses => getReceivers());
 }
 
 function getReceivers() {
