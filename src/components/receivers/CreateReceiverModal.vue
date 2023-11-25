@@ -29,7 +29,7 @@
 import { ref, defineExpose } from "vue";
 
 import AppContentContainerBounds from '@/layouts/default/AppContentContainerBounds.vue';
-import EditSketchReceiver from "@/components/EditSketchReceiver.vue";
+import EditSketchReceiver from "@/components/receivers/EditSketchReceiver.vue";
 
 import { Receiver } from "@/models/Receiver";
 import ReceiverStatus from "@/models/ReceiverStatus";

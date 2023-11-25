@@ -56,13 +56,13 @@
 <script lang="ts" setup>
 import { ref, defineExpose } from "vue";
 
-import ReceiverStatusComponent from "@/components/ReceiverStatusComponent.vue";
-import EditValidatedReceiver from "@/components/EditValidatedReceiver.vue";
-import ConfirmReceiversDeletionModal from '@/components/ConfirmReceiversDeletionModal.vue';
+import ReceiverStatusComponent from "@/components/receivers/ReceiverStatusComponent.vue";
+import EditValidatedReceiver from "@/components/receivers/EditValidatedReceiver.vue";
+import EditSketchReceiver from "@/components/receivers/EditSketchReceiver.vue";
+import ConfirmReceiversDeletionModal from '@/components/receivers/ConfirmReceiversDeletionModal.vue';
 
 import { Receiver, isSameReceiver } from "@/models/Receiver";
 import ReceiverStatus from '@/models/ReceiverStatus';
-import EditSketchReceiver from "./EditSketchReceiver.vue";
 
 const emit = defineEmits(["editReceiver", "deleteReceiver"]);
 

@@ -97,10 +97,10 @@ import { ref, inject, reactive, computed } from 'vue';
 import { AxiosStatic } from 'axios';
 
 import AppContentContainerBounds from '@/layouts/default/AppContentContainerBounds.vue';
-import ReceiverStatusComponent from "@/components/ReceiverStatusComponent.vue";
-import CreateReceiverModal from '@/components/CreateReceiverModal.vue';
-import EditReceiverModal from '@/components/EditReceiverModal.vue';
-import ConfirmReceiversDeletionModal from '@/components/ConfirmReceiversDeletionModal.vue';
+import ReceiverStatusComponent from "@/components/receivers/ReceiverStatusComponent.vue";
+import CreateReceiverModal from '@/components/receivers/CreateReceiverModal.vue';
+import EditReceiverModal from '@/components/receivers/EditReceiverModal.vue';
+import ConfirmReceiversDeletionModal from '@/components/receivers/ConfirmReceiversDeletionModal.vue';
 import RequestFeedbackMessage from '@/components/RequestFeedbackMessage.vue';
 
 import Requester from "@/utils/Requester";

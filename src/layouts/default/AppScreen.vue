@@ -15,6 +15,6 @@
 </template>
 
 <script lang="ts" setup>
-import AppContentContainerBounds from './AppContentContainerBounds.vue';
+import AppContentContainerBounds from '@/layouts/default/AppContentContainerBounds.vue';
 
 </script>
