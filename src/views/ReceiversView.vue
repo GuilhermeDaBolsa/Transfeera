@@ -8,11 +8,18 @@
 	<v-toolbar flat height="120">
 		<AppContentContainerBounds>
 			<v-row>
-				<v-col id="createSketchReceiverLabelAndButton" class="d-flex align-center" @click="createReceiverModal?.open">
-					<div style="font-size: 28px; font-weight: 300; color: grey;">Seus favorecidos</div>
-					<v-btn class="ml-2" color="primary" variant="flat" icon size="44">
-						<v-icon color="inside-primary" size="38">mdi-plus</v-icon>
-					</v-btn>
+				<v-col>
+					<div
+						id="createSketchReceiverLabelAndButton"
+						class="d-flex align-center"
+						style="cursor: pointer; width: fit-content;"
+						@click="createReceiverModal?.open"
+					>
+						<div style="font-size: 28px; font-weight: 300; color: grey;">Seus favorecidos</div>
+						<v-btn class="ml-2" color="primary" variant="flat" icon size="44">
+							<v-icon color="inside-primary" size="38">mdi-plus</v-icon>
+						</v-btn>
+					</div>
 				</v-col>
 				<v-col class="d-flex justify-end" cols="12" sm="6">
 					<v-text-field
