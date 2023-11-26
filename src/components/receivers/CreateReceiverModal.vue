@@ -15,9 +15,13 @@
 					<EditSketchReceiver ref="receiverComponent" :receiver="newReceiver" />
 					
 					<v-card-actions class="px-0">
-						<v-btn color="primary" variant="outlined" size="x-large" min-width="150" @click="close">Cancelar</v-btn>
+						<v-btn color="primary" variant="outlined" size="x-large" min-width="150" @click="close">
+							Cancelar
+						</v-btn>
 						<v-spacer />
-						<v-btn color="valid" variant="flat" size="x-large" min-width="150" @click="validateAndSaveReceiver">Salvar</v-btn>
+						<v-btn name="saveReceiver" color="valid" variant="flat" size="x-large" min-width="150" @click="validateAndSaveReceiver">
+							Salvar
+						</v-btn>
 					</v-card-actions>
 				</div>
 			</div>

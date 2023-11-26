@@ -41,8 +41,26 @@
 						</v-col>
 						<v-spacer></v-spacer>
 						<v-col class="d-flex justify-end" cols="auto">
-							<v-btn color="red" variant="flat" size="x-large" icon="mdi-delete-forever" rounded min-width="64" max-height="52" @click="openDeleteReceiversConfirmationModal"/>
-							<v-btn color="valid" variant="flat" size="x-large" min-width="150" @click="validateAndConfirmEdit">Salvar</v-btn>
+							<v-btn
+								name="openDeleteReceiverConfirmation"
+								color="red"
+								variant="flat"
+								size="x-large"
+								icon="mdi-delete-forever"
+								rounded min-width="64"
+								max-height="52"
+								@click="openDeleteReceiversConfirmationModal"
+							/>
+							<v-btn
+								name="saveReceiver"
+								color="valid"
+								variant="flat"
+								size="x-large"
+								min-width="150"
+								@click="validateAndConfirmEdit"
+							>
+								Salvar
+							</v-btn>
 						</v-col>
 					</v-row>
 				</v-card-actions>

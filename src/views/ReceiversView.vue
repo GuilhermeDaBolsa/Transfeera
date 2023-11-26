@@ -8,14 +8,15 @@
 	<v-toolbar flat height="120">
 		<AppContentContainerBounds>
 			<v-row>
-				<v-col class="d-flex align-center">
+				<v-col id="createSketchReceiverLabelAndButton" class="d-flex align-center" @click="createReceiverModal?.open">
 					<div style="font-size: 28px; font-weight: 300; color: grey;">Seus favorecidos</div>
-					<v-btn class="ml-2" color="primary" variant="flat" icon size="44" @click="createReceiverModal?.open">
+					<v-btn class="ml-2" color="primary" variant="flat" icon size="44">
 						<v-icon color="inside-primary" size="38">mdi-plus</v-icon>
 					</v-btn>
 				</v-col>
 				<v-col class="d-flex justify-end" cols="12" sm="6">
 					<v-text-field
+						id="filterReceiversField"
 						v-model="receiversSearch"
 						placeholder="Nome, CPF, agência ou conta"
 						variant="solo"
@@ -34,6 +35,7 @@
 	<v-toolbar color="background" flat height="120">
 		<AppContentContainerBounds>
 			<v-btn
+				id="deleteSelectedReceiversButton"
 				size="x-large"
 				color="red-lighten-1"
 				variant="flat"
@@ -49,11 +51,13 @@
 	<AppContentContainerBounds>
 		<div v-if="!receivers.isLoading && receivers.isError" class="d-flex flex-column align-center ma-auto">
 			<v-icon color="error" size="48">mdi-alert</v-icon>
-			Ocorreu um erro ao buscar seus favorecidos
+			<div class="mb-2">Ocorreu um erro ao buscar seus favorecidos</div>
+			<v-btn variant="outlined" rounded="pill" @click="getReceivers">Tentar novamente</v-btn>
 		</div>
 
 		<v-data-table
 			v-else
+			id="receiversTable"
 			v-model="selectedReceivers"
 			v-model:page="pageSelected"
 			:loading="receivers.isLoading"
@@ -76,24 +80,24 @@
 			<template v-slot:item.account="{ value }">{{ value ? accountMask.masked(value) : '' }}</template>
 			<template v-slot:item.status="{ value }"><ReceiverStatusComponent :status="value" /></template>
 
-			<template v-slot:bottom>
-				<div class="text-center pt-3 pb-5">
+			<template v-slot:bottom="{ pageCount }">
+				<div class="text-center pt-3">
 					<v-pagination v-model="pageSelected" :length="pageCount"></v-pagination>
 				</div>
 			</template>
 		</v-data-table>
 	</AppContentContainerBounds>
 
-	<v-img class="ma-auto" :width="120" cover src="/transfeera-logo-cinza.png"></v-img>
+	<v-img class="ma-auto mt-5" :width="120" cover src="/transfeera-logo-cinza.png"></v-img>
 
-	<CreateReceiverModal ref="createReceiverModal" @saveReceiver="insertReceiver"/>
-	<EditReceiverModal ref="editReceiverModal" @editReceiver="editReceiver" @deleteReceiver="deleteReceivers"/>
+	<CreateReceiverModal id="createReceiverModal" ref="createReceiverModal" @saveReceiver="insertReceiver"/>
+	<EditReceiverModal id="editReceiverModal" ref="editReceiverModal" @editReceiver="editReceiver" @deleteReceiver="deleteReceivers"/>
 	<ConfirmReceiversDeletionModal ref="confirmReceiversDeletionModal" @confirmDeletion="deleteReceivers"/>
 	<RequestFeedbackMessage ref="requestFeedbackMessage"/>
 </template>
 
 <script lang="ts" setup>
-import { ref, inject, reactive, computed } from 'vue';
+import { ref, inject, reactive } from 'vue';
 import { AxiosStatic } from 'axios';
 
 import AppContentContainerBounds from '@/layouts/default/AppContentContainerBounds.vue';
@@ -115,7 +119,6 @@ const receivers = reactive(new Requester<Receiver[]>(axios));
 const receiversSearch = ref("");
 const selectedReceivers = ref<Receiver[]>([]);
 const receiversPerPage = 6;
-const pageCount = computed(() => Math.ceil((receivers.response?.length ?? 0) / receiversPerPage));
 const pageSelected = ref(1);
 
 const saveReceiverReq = reactive(new Requester<boolean>(axios));

@@ -6,6 +6,7 @@
 			<v-col cols="12" sm="7">
 				<div class="text-subtitle-1 text-medium-emphasis">Nome completo ou razão social</div>
 				<v-text-field
+					name="receiverNameField"
 					v-model="editedReceiver.name"
 					placeholder="Favorecido de Exemplo"
 					variant="outlined"
@@ -17,6 +18,7 @@
 			<v-col cols="12" sm="5">
 				<div class="text-subtitle-1 text-medium-emphasis">CPF / CNPJ</div>
 				<v-text-field
+					name="receiverCpfCnpjField"
 					v-model="editedReceiver.tax_id"
 					placeholder="000.000.000-00"
 					variant="outlined"
@@ -29,6 +31,7 @@
 			<v-col cols="12">
 				<div class="text-subtitle-1 text-medium-emphasis">Email para envio do comprovante</div>
 				<v-text-field
+					name="receiverEmailField"
 					v-model="editedReceiver.email"
 					placeholder="favorecido@email.com"
 					variant="outlined"
@@ -43,6 +46,7 @@
 
 		<div class="text-subtitle-1 text-medium-emphasis">Tipo de chave</div>
 		<v-select
+			name="receiverPixKeyTypeSelect"
 			v-model="editedReceiver.pix_key_type"
 			placeholder="E-mail, CPF/CNPJ, etc..."
 			:items="selectablePixKeyTypes"
@@ -53,6 +57,7 @@
 
 		<div class="text-subtitle-1 text-medium-emphasis">Chave</div>
 		<v-text-field
+			name="receiverPixKeyField"
 			v-model="editedReceiver.pix_key"
 			placeholder="Chave do pix"
 			variant="outlined"

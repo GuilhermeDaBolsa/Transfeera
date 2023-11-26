@@ -111,7 +111,7 @@
     {
       "id": "ceadc953-5f89-43b3-8f00-05a1b24997dc",
       "name": "Guilherme Santos",
-      "email": "guilherme.santos@exemplo.com",
+      "email": "0.13524769680853588-1700961283074@hotmail.com",
       "tax_id": "24334548000136",
       "branch": "1492",
       "account": "219307",
@@ -321,6 +321,42 @@
       "status": "rascunho",
       "created_at": "2023-10-25 16:20:10-03",
       "updated_at": "2023-10-25 16:20:10-03"
+    },
+    {
+      "status": "rascunho",
+      "name": "Nome Teste",
+      "tax_id": "281.503.440-98",
+      "email": "email_teste@hotmail.com",
+      "pix_key_type": "aleatoria",
+      "pix_key": "pix_chave_teste",
+      "id": "GsCpmhr"
+    },
+    {
+      "status": "rascunho",
+      "name": "Nome Teste",
+      "tax_id": "281.503.440-98",
+      "email": "email_teste@hotmail.com",
+      "pix_key_type": "aleatoria",
+      "pix_key": "",
+      "id": "dTQmcTc"
+    },
+    {
+      "status": "rascunho",
+      "name": "Nome Teste",
+      "tax_id": "281.503.440-98",
+      "email": "email_teste@hotmail.com",
+      "pix_key_type": "aleatoria",
+      "pix_key": "pix_chave_teste",
+      "id": "1qqG3DT"
+    },
+    {
+      "status": "rascunho",
+      "name": "Nome Teste",
+      "tax_id": "18.536.934/0001-08",
+      "email": "email_teste@hotmail.com",
+      "pix_key_type": "cnpj",
+      "pix_key": "18536934000108",
+      "id": "tGbdelQ"
     }
   ]
 }

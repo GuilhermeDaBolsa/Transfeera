@@ -27,6 +27,7 @@
 			<v-col cols="12" sm="7">
 				<div class="statement">E-mail do favorecido</div>
 				<v-text-field
+					name="receiverEmailField"
 					v-model="editedReceiver.email"
 					placeholder="favorecido@email.com"
 					variant="outlined"
