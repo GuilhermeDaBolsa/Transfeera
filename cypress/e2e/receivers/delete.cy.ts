@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-context("Create Receivers", () => {
+context("Delete Receivers", () => {
 
 	beforeEach(() => {
 		cy.visit("http://localhost:3001/");
